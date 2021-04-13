@@ -13,10 +13,20 @@ variable "environment_prefix" {
 
 }
 
+variable "services_list" {
+  type = list(string)
+  default = [
+    "cloudkms",
+    "artifactregistry"
+  ]
+}
+
 variable "iam_policy" {
   default = {
-    admin     = []
-    reader    = []
+    admin = []
+    reader = [
+      "serviceAccount:vault-server@datatonic-devops-play.iam.gserviceaccount.com"
+    ]
     repoAdmin = []
     writer    = []
   }
