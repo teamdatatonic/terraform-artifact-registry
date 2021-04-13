@@ -42,6 +42,8 @@ resource "google_artifact_registry_repository" "repo" {
   repository_id = "${var.project_id}-${each.key}"
   format        = each.value.format
 
+  kms_key_name = google_kms_crypto_key.instance_key[each.key].name
+
   depends_on = [
     google_project_service.artifact_registry_service
   ]
