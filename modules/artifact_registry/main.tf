@@ -22,7 +22,7 @@ resource "google_kms_key_ring" "artifact_registry" {
 resource "google_kms_crypto_key" "instance_key" {
   for_each = var.registry_config
 
-  name     = "${each.key}-repo-key"
+  name     = "${each.key}-key"
   key_ring = google_kms_key_ring.artifact_registry.id
 
   rotation_period = "2592000s"
@@ -42,7 +42,7 @@ resource "google_artifact_registry_repository" "repo" {
   repository_id = "${var.project_id}-${each.key}"
   format        = each.value.format
 
-  kms_key_name = google_kms_crypto_key.instance_key[each.key].name
+  kms_key_name = google_kms_crypto_key.instance_key[each.key].self_link
 
   depends_on = [
     google_project_service.artifact_registry_service
